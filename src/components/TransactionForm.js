@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 
-const TransactionForm = ({ onAddTransaction }) => {
+function TransactionForm({ onAddTransaction }) {
   const [date, setDate] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
   const [amount, setAmount] = useState('');
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = (event) => {
+    event.preventDefault();
     const newTransaction = {
       date,
       description,
@@ -15,6 +15,7 @@ const TransactionForm = ({ onAddTransaction }) => {
       amount,
     };
     onAddTransaction(newTransaction);
+    // Reset form fields
     setDate('');
     setDescription('');
     setCategory('');
@@ -23,33 +24,25 @@ const TransactionForm = ({ onAddTransaction }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Date"
-        value={date}
-        onChange={(e) => setDate(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="Description"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="Category"
-        value={category}
-        onChange={(e) => setCategory(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="Amount"
-        value={amount}
-        onChange={(e) => setAmount(e.target.value)}
-      />
+      <label>
+        Date:
+        <input type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
+      </label>
+      <label>
+        Description:
+        <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} required />
+      </label>
+      <label>
+        Category:
+        <input type="text" value={category} onChange={(e) => setCategory(e.target.value)} required />
+      </label>
+      <label>
+        Amount:
+        <input type="number" value={amount} onChange={(e) => setAmount(e.target.value)} required />
+      </label>
       <button type="submit">Add Transaction</button>
     </form>
   );
-};
+}
 
 export default TransactionForm;
