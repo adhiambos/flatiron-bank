@@ -1,44 +1,48 @@
-import React, { useState, useEffect } from 'react';
-import TransactionTable from './components/TransactionTable'; // Ensure this import matches the actual file name
-import TransactionForm from './components/TransactionForm'; // Ensure this import matches the actual file name
+import React, { useState } from 'react';
+import TransactionTable from './TransactionTable';
+import SearchBar from './SearchBar';
+import TransactionForm from './TransactionForm';
 
-const App = () => {
+function App() {
   const [transactions, setTransactions] = useState([
-    // Your initial transactions
+    {
+      date: "2024-04-01",
+      description: "cheque",
+      category: "rent",
+      amount: "5000",
+    },
+    {
+      date: "2024-04-02",
+      description: "uber ride",
+      category: "transport",
+      amount: "850",
+    },
+    {
+      date: "2024-04-03",
+      description: "salon",
+      category: "beauty",
+      amount: "2500",
+    },
   ]);
+
   const [searchTerm, setSearchTerm] = useState('');
 
-  const addTransaction = (newTransaction) => {
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const handleAddTransaction = (newTransaction) => {
     setTransactions([...transactions, newTransaction]);
   };
 
-  const filterTransactions = (searchTerm) => {
-    if (!searchTerm) {
-      return transactions;
-    }
-    return transactions.filter(transaction =>
-      transaction.description.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  };
-
-  useEffect(() => {
-    const filteredTransactions = filterTransactions(searchTerm);
-    setTransactions(filteredTransactions); // Update the state with filtered transactions
-  }, [searchTerm]);
-
   return (
-    <div>
-      <h1>Bank Transactions</h1>
-      <TransactionForm onAddTransaction={addTransaction} />
-      <input
-        type="text"
-        placeholder="Search..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
-      <TransactionTable transactions={transactions} /> {/* Pass the filtered transactions here */}
+    <div className="app">
+      <h1>Recent Bank Transactions</h1>
+      <SearchBar searchTerm={searchTerm} onSearchChange={handleSearchChange} />
+      <TransactionTable transactions={transactions.filter(transaction => transaction.description.toLowerCase().includes(searchTerm.toLowerCase()))} />
+      <TransactionForm onAddTransaction={handleAddTransaction} />
     </div>
   );
-};
+}
 
 export default App;
