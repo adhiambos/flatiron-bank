@@ -1,21 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import TransactionTable from './components/TransactionForm';
-import TransactionForm from './components/TransactionTable';
+import TransactionTable from './components/TransactionTable'; // Ensure this import matches the actual file name
+import TransactionForm from './components/TransactionForm'; // Ensure this import matches the actual file name
 
 const App = () => {
   const [transactions, setTransactions] = useState([
     // Your initial transactions
   ]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [filteredTransactions, setFilteredTransactions] = useState(transactions);
 
   const addTransaction = (newTransaction) => {
     setTransactions([...transactions, newTransaction]);
   };
 
+  const filterTransactions = (searchTerm) => {
+    if (!searchTerm) {
+      return transactions;
+    }
+    return transactions.filter(transaction =>
+      transaction.description.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  };
+
   useEffect(() => {
-    const filtered = filterTransactions(searchTerm);
-    setFilteredTransactions(filtered);
+    const filteredTransactions = filterTransactions(searchTerm);
+    setTransactions(filteredTransactions); // Update the state with filtered transactions
   }, [searchTerm]);
 
   return (
@@ -28,7 +36,7 @@ const App = () => {
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
-      <TransactionTable transactions={filteredTransactions} />
+      <TransactionTable transactions={transactions} /> {/* Pass the filtered transactions here */}
     </div>
   );
 };
