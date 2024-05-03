@@ -1,40 +1,36 @@
-import React, { useState } from 'react';
-import TransactionTable from './components/TransactionForm'
-import TransactionForm from './components/';
+import React, { useState, useEffect } from 'react';
+import TransactionTable from './components/TransactionForm';
+import TransactionForm from './components/TransactionTable';
 
-const TransactionApp = () => {
+const App = () => {
   const [transactions, setTransactions] = useState([
-    {
-      date: "2024-04-01",
-      description: "cheque",
-      category: "rent",
-      amount: "5000",
-    },
-    {
-      date: "2024-04-02",
-      description: "uber ride",
-      category: "transport",
-      amount: "850",
-    },
-    {
-      date: "2024-04-03",
-      description: "salon",
-      category: "beauty",
-      amount: "2500",
-    },
+    // Your initial transactions
   ]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredTransactions, setFilteredTransactions] = useState(transactions);
 
   const addTransaction = (newTransaction) => {
     setTransactions([...transactions, newTransaction]);
   };
 
+  useEffect(() => {
+    const filtered = filterTransactions(searchTerm);
+    setFilteredTransactions(filtered);
+  }, [searchTerm]);
+
   return (
     <div>
       <h1>Bank Transactions</h1>
       <TransactionForm onAddTransaction={addTransaction} />
-      <TransactionTable transactions={transactions} />
+      <input
+        type="text"
+        placeholder="Search..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
+      <TransactionTable transactions={filteredTransactions} />
     </div>
   );
 };
 
-export default TransactionApp;
+export default App;

@@ -1,5 +1,3 @@
-import React from 'react';
-
 const TransactionTable = ({ transactions }) => {
   return (
     <table>
@@ -24,5 +22,3 @@ const TransactionTable = ({ transactions }) => {
     </table>
   );
 };
-
-export default TransactionTable;
